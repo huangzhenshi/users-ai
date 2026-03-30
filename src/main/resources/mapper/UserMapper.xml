@@ -10,6 +10,7 @@
         <result property="email" column="email"/>
         <result property="phone" column="phone"/>
         <result property="status" column="status"/>
+        <result property="userType" column="user_type"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
@@ -23,17 +24,18 @@
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user (username, password, email, phone, status)
-        VALUES (#{username}, #{password}, #{email}, #{phone}, #{status})
+        INSERT INTO user (username, password, email, phone, status, user_type)
+        VALUES (#{username}, #{password}, #{email}, #{phone}, #{status}, #{userType})
     </insert>
 
     <update id="update">
         UPDATE user
-        SET username = #{username},
-            password = #{password},
-            email    = #{email},
-            phone    = #{phone},
-            status   = #{status}
+        SET username  = #{username},
+            password  = #{password},
+            email     = #{email},
+            phone     = #{phone},
+            status    = #{status},
+            user_type = #{userType}
         WHERE id = #{id}
     </update>
 

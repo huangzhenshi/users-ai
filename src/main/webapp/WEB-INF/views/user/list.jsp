@@ -23,6 +23,7 @@
             <th>用户名</th>
             <th>邮箱</th>
             <th>手机号</th>
+            <th>用户类型</th>
             <th>状态</th>
             <th>创建时间</th>
             <th>操作</th>
@@ -35,6 +36,22 @@
                 <td>${u.username}</td>
                 <td>${u.email}</td>
                 <td>${u.phone}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${u.userType == 1}">
+                            <span class="badge bg-primary">普通用户</span>
+                        </c:when>
+                        <c:when test="${u.userType == 2}">
+                            <span class="badge bg-warning text-dark">经销商</span>
+                        </c:when>
+                        <c:when test="${u.userType == 3}">
+                            <span class="badge bg-danger">管理员</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="badge bg-secondary">未知</span>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
                 <td>
                     <c:choose>
                         <c:when test="${u.status == 1}">
@@ -54,7 +71,7 @@
             </tr>
         </c:forEach>
         <c:if test="${empty users}">
-            <tr><td colspan="7" class="text-center text-muted">暂无数据</td></tr>
+            <tr><td colspan="8" class="text-center text-muted">暂无数据</td></tr>
         </c:if>
         </tbody>
     </table>

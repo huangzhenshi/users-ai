@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -21,6 +23,13 @@ public class UserController {
     public String list(Model model) {
         model.addAttribute("users", userService.findAll());
         return "user/list";
+    }
+
+    // JSON 列表（供 API 调用）
+    @GetMapping("/api/list")
+    @ResponseBody
+    public List<User> listApi() {
+        return userService.findAll();
     }
 
     // 新增页面
