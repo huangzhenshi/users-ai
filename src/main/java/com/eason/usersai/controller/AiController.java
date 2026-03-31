@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/ai")
 public class AiController {
+
+    private static final Logger log = LoggerFactory.getLogger(AiController.class);
 
     private final ChatClient chatClient;
     private final UserService userService;
@@ -56,7 +61,13 @@ public class AiController {
                 请基于以上用户数据回答用户的问题。如果问题与用户数据无关，也可以正常回答。
                 """.formatted(buildUserContext(users));
 
-        return chatClient.prompt()
+        log.info("========== AI Chat Request ==========");
+        log.info("[Session] {}", sessionId);
+        log.info("[User Message] {}", message);
+        log.info("[System Prompt]\n{}", systemPrompt);
+        log.info("=====================================");
+
+        String response = chatClient.prompt()
                 .system(systemPrompt)
                 .user(message)
                 .advisors(MessageChatMemoryAdvisor.builder(chatMemory)
@@ -64,6 +75,12 @@ public class AiController {
                         .build())
                 .call()
                 .content();
+
+        log.info("========== AI Chat Response ==========");
+        log.info("[LLM Response] {}", response);
+        log.info("======================================");
+
+        return response;
     }
 
     @PostMapping("/clear")
